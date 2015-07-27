@@ -8,7 +8,7 @@
 
 #include <iostream>
 //#include "Node.h"
-//#include "Bptree.h"
+#include "Bptree.h"
 using namespace std;
 
 #ifdef _Bptree_
@@ -63,67 +63,83 @@ int Node::someFunction(int parameters)
 */
 
 Bptree::Bptree(int keySize) {
-	this.keySize = keySize;
-	root = NULL;
+    this->keySize = keySize;
+    root = NULL;
 
-	if((keySize + 1) % 2 == 0) {
-		interiorReq = leafReq = keySize;
-	} else {
-		interiorReq = ((keySize + 1) / 2) + 1;
-		leafReq = (keySize + 1) / 2;
-	}
+    if((keySize + 1) % 2 == 0) {
+        interiorReq = leafReq = keySize;
+    } else {
+        interiorReq = ((keySize + 1) / 2) + 1;
+        leafReq = (keySize + 1) / 2;
+    }
+}
+
+Node* Bptree::getNode(int key, Node* nd) {
+    int nextNdIndex = 0;
+    // this is a leaf node
+    if (nd->nodePointers == NULL) {
+        return nd;
+    } else {
+        for(int i=0; i<nd->currentSize; i++) {
+            if(key < nd->keyArray[i]) {
+                break;
+            }
+            nextNdIndex++;
+        }
+        return (getNode(key, nd->nodePointers[nextNdIndex]));
+    }
 }
 
 void Bptree::insert(int key, string value) {
-	if(root == NULL) {
-		root = new Node(keySize);
-	}
+    if(root == NULL) {
+        root = new Node(keySize);
+    }
     //Node* tempNd = root;
-	Node* targetLeaf = getNode(key, nd);
-	if (targetLeaf->valuePointers == NULL) {
-		targetLeaf->valuePointers = new string[valueSize];
-	}
-	if (!targetLeaf->isFull()) {
-		int insertIndex = 0;
-		// insert in ascending order
-		for (;insertIndex<currentSize; insertIndex++) {
-			if (key < targetLeaf->keyArray[insertIndex]) {
-				nd->shuffleUp(insertIndex);
-				break;
-			}
-		}
-		targetLeaf->keyArray[insertIndex] = key;
-		targetLeaf->valuePointers[insertIndex] = value;
-		nd->currentSize++;
-	} else {
-		cout << "this node is full!" << endl;
-	}
+    Node* targetLeaf = getNode(key, root);
+    if (targetLeaf->valuePointers == NULL) {
+        targetLeaf->valuePointers = new string[keySize];
+    }
+    if (!targetLeaf->isFull()) {
+        int insertIndex = 0;
+        // insert in ascending order
+        for (;insertIndex < targetLeaf->currentSize; insertIndex++) {
+            if (key < targetLeaf->keyArray[insertIndex]) {
+                targetLeaf->shuffleUp(insertIndex);
+                break;
+            }
+        }
+        targetLeaf->keyArray[insertIndex] = key;
+        targetLeaf->valuePointers[insertIndex] = value;
+        targetLeaf->currentSize++;
+    } else {
+        cout << "this node is full!" << endl;
+    }
     
 }
 
 // helper method for insert
 void Bptree::findAndInsert(int key, string value, Node* nd) {
-	Node* targetNd = getNode(key, nd);
+    Node* targetNd = getNode(key, nd);
 
 }
-
+/*
 Node* Bptree::getNode(int key, Node* nd) {
-	int nextNdIndex = 0;
-	// this is a leaf node
-	if (nd->nodePointers == NULL) {
-		return nd;
-	} else {
-		for(int i=0; i<nd->currentSize; i++) {
-			if(key < nd->keyArray[i]) {
-				break;
-			}
-			nextNdIndex++;
-		}
-		getNode(key, nd->nodePointers[nextNdIndex]);
-	}
+    int nextNdIndex = 0;
+    // this is a leaf node
+    if (nd->nodePointers == NULL) {
+        return nd;
+    } else {
+        for(int i=0; i<nd->currentSize; i++) {
+            if(key < nd->keyArray[i]) {
+                break;
+            }
+            nextNdIndex++;
+        }
+        return (getNode(key, nd->nodePointers[nextNdIndex]));
+    }
 }
-
-
+*/
+/*
 
 int Bptree::remove(int parameters){
     
@@ -135,16 +151,17 @@ string Bptree::find(int parameters){
     
     return 0;
 }
+*/
 
 void Bptree::printKeys(){
-	cout << "key size is: " << keySize << endl;
-	cout << "interiorRed: " << interiorReq << " leafReq: " << leafReq << endl;
-	cout << "displaying keys" << endl;
+    cout << "key size is: " << keySize << endl;
+    cout << "interiorRed: " << interiorReq << " leafReq: " << leafReq << endl;
+    cout << "displaying keys" << endl;
     Node* tempNd = root;
 
-	for(int i=0; i<tempNd->currentSize; i++) {
-		cout << tempNd->keyPointers[i] << endl;
-	}
+    for(int i=0; i<tempNd->currentSize; i++) {
+        cout << tempNd->keyArray[i] << endl;
+    }
    
 }
 
@@ -155,7 +172,7 @@ int Bptree::printvalues(){
 
 
 
-
+/*
 int selection(int parameters, Bptree *tree){ // this function is going to direct us to the function that we need to use, depending on what the user inputs
     int inputkey;
     string inputstring;
@@ -197,11 +214,13 @@ int selection(int parameters, Bptree *tree){ // this function is going to direct
     }
     return 0;
 }
+*/
+
 
 /*
 int main(int argc, const char * argv[]) {
     // insert code here...
-    /*
+   
     int maxkeys;
     cout << "Hello, please enter the number of keys per node: \n";
     cin>>maxkeys;
@@ -221,11 +240,11 @@ int main(int argc, const char * argv[]) {
         cin>>choice;
         printf("you chose %d \n", choice);
         selection(choice, &tree);
-		
-		string test = "ads";
-		cout << "the string is: " << test << endl;
+        
+        string test = "ads";
+        cout << "the string is: " << test << endl;
 
-		return 0;
+        return 0;
     
 }
 */
