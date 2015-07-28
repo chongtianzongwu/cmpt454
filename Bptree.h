@@ -114,9 +114,9 @@ public:
 				
 				void shuffleUp(int startIndex) {
 					for(int i=currentSize-1; i>=startIndex; i--) {
-						keyArray[i] = keyArray[i+1];
+						keyArray[i+1] = keyArray[i];
 						if (valuePointers != NULL) {
-							valuePointers[i] = valuePointers[i+1];
+							valuePointers[i+1] = valuePointers[i];
 						}
 					}
 					currentSize++;

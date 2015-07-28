@@ -116,29 +116,6 @@ void Bptree::insert(int key, string value) {
     }
     
 }
-
-// helper method for insert
-void Bptree::findAndInsert(int key, string value, Node* nd) {
-    Node* targetNd = getNode(key, nd);
-
-}
-/*
-Node* Bptree::getNode(int key, Node* nd) {
-    int nextNdIndex = 0;
-    // this is a leaf node
-    if (nd->nodePointers == NULL) {
-        return nd;
-    } else {
-        for(int i=0; i<nd->currentSize; i++) {
-            if(key < nd->keyArray[i]) {
-                break;
-            }
-            nextNdIndex++;
-        }
-        return (getNode(key, nd->nodePointers[nextNdIndex]));
-    }
-}
-*/
 /*
 
 int Bptree::remove(int parameters){
@@ -154,8 +131,8 @@ string Bptree::find(int parameters){
 */
 
 void Bptree::printKeys(){
-    cout << "key size is: " << keySize << endl;
-    cout << "interiorRed: " << interiorReq << " leafReq: " << leafReq << endl;
+    //cout << "key size is: " << keySize << endl;
+    //cout << "interiorRed: " << interiorReq << " leafReq: " << leafReq << endl;
     cout << "displaying keys" << endl;
     Node* tempNd = root;
 
