@@ -21,8 +21,10 @@ int main(int argc, const char * argv[]) {
 	tree->insert(3, "world");
 	tree->insert(10, "!");
 	tree->printKeys();
+	tree->printValues();
 	tree->insert(2, "pc");
 	tree->printKeys();
+	tree->printValues();
 
 
     

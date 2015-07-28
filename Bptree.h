@@ -119,7 +119,6 @@ public:
 							valuePointers[i+1] = valuePointers[i];
 						}
 					}
-					currentSize++;
 				}
 
 
@@ -236,7 +235,7 @@ class Bptree {
 		//int remove(int parameters);
 		//string find(int parameters);
 		void printKeys();
-		int printvalues();
+		void printValues();
 
    
 };

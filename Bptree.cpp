@@ -133,21 +133,39 @@ string Bptree::find(int parameters){
 void Bptree::printKeys(){
     //cout << "key size is: " << keySize << endl;
     //cout << "interiorRed: " << interiorReq << " leafReq: " << leafReq << endl;
-    cout << "displaying keys" << endl;
+    cout << "\ndisplaying keys\n" << endl;
     Node* tempNd = root;
 
     for(int i=0; i<tempNd->currentSize; i++) {
+        cout << "currentSize is: " << tempNd->currentSize << endl;
         cout << tempNd->keyArray[i] << endl;
+
     }
    
 }
 
-int Bptree::printvalues(){
-    
-    return 0;
+void Bptree::printValues(){
+    cout << "\ndisplaying values\n" << endl;
+    Node* tempNd = root;
+
+    for(int i=0; i<tempNd->currentSize; i++) {
+        cout << "currentSize is: " << tempNd->currentSize << endl;
+        cout << tempNd->valuePointers[i] << endl;
+
+    }
 }
+/*
+void Bptree::display() {
+    cout << "displaying values" << endl;
+    Node* tempNd = root;
 
+    for(int i=0; i<tempNd->currentSize; i++) {
+        cout << "currentSize is: " << tempNd->currentSize << endl;
+        cout << tempNd->keyArray[i] << endl;
 
+    }
+}
+*/
 
 /*
 int selection(int parameters, Bptree *tree){ // this function is going to direct us to the function that we need to use, depending on what the user inputs
