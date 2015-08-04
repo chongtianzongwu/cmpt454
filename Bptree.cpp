@@ -79,13 +79,22 @@ Node* Bptree::getLeaf(int key, Node* nd) {
     int nextNdIndex = 0;
     // this is a leaf node
     if (nd->nodePointers == NULL) {
+        
+        /*
+        bool isFound = false;
         for (int i=0; i<nd->currentSize; i++) {
-            if (nd->keyarray[i] == key) {
-                return nd;
-            } else {
-                 return NULL;
+            if (nd->keyArray[i] == key) {
+                isFound = true;
+                break;
             }
         }
+        if (isFound) {
+            return nd;
+        } else {
+            return NULL;
+        }
+         */
+        return nd;
        
     } else {
         for(int i=0; i<nd->currentSize; i++) {
@@ -195,6 +204,7 @@ void Bptree::split(int key, string value, Node* nd, Node* child) {
 	} else {
 		cout << "parent is full!" << endl;
 		sibling->parent = nd->parent;
+        //nd->parent->currentSize++;
 		insertToInterior(key, nd->parent, sibling);
 	}
 }
@@ -205,7 +215,10 @@ void Bptree::insertToInterior(int key, Node* nd, Node* child) {
 	}
 	if (!nd->isFull()) {
 		int i = 0;
-		for (; i<nd->currentSize; i++) {
+        
+        
+        
+		for (; i<nd->currentSize+1; i++) {
 			if (key < nd->keyArray[i]) {
 				nd->shuffleUp(i);
 				break;

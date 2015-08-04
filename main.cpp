@@ -38,8 +38,17 @@ int main(int argc, const char * argv[]) {
 	tree->insert(6, "nope");
 	tree->printKeys();
 	tree->printValues();
+
+	tree->insert(7, "a");
+	tree->printKeys();
+	tree->printValues();
     
     tree->remove(1);
+	
+	tree->insert(8, "b");
+	//tree->insert(9, "c");
+	tree->printKeys();
+	tree->printValues();
 	
 	
 	
