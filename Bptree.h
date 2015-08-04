@@ -167,6 +167,8 @@ class Bptree {
 		//string find(int parameters);
 		void printKeys();
 		void printValues();
+        void remove(int key);
+        void find(int key);
 
    
 };

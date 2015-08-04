@@ -19,6 +19,7 @@ int main(int argc, const char * argv[]) {
 	Bptree* tree = new Bptree(valueSize);
 	
 	tree->printKeys();
+    tree->remove(1);
 	
 	tree->insert(1, "hello");
 	tree->insert(3, "world");
@@ -37,6 +38,8 @@ int main(int argc, const char * argv[]) {
 	tree->insert(6, "nope");
 	tree->printKeys();
 	tree->printValues();
+    
+    tree->remove(1);
 	
 	
 	

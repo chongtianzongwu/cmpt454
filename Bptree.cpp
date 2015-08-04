@@ -289,19 +289,33 @@ int* Bptree::mergeToSortedArray(int key, int* oldArr) {
  	
 	return newArr;
 }
-/*
 
-int Bptree::remove(int parameters){
+void Bptree::find(int key){
+    if(root == NULL) {
+        cout<<"Tree is empty";
+    }
+    getLeaf(key, root);
     
-    return 0;
+    
     
 }
 
-string Bptree::find(int parameters){
-    
-    return 0;
+
+
+
+
+void Bptree::remove(int key){
+
+ if(root == NULL) {
+ cout<<"Tree is empty";
+ }
+ 
+ 
+ 
+ 
+ 
 }
-*/
+
 
 void Bptree::printKeys(){
     cout << "\n---------------- Displaying Keys ----------------\n" << endl;
