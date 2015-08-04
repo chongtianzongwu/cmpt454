@@ -44,7 +44,7 @@ public:
 	class Node {
 			public:
 				//int holder;
-				int keySize;
+				int maxKeys;
 				int currentSize;
 				int* keyArray;
 				Node* parent; // pointer to a parent node
@@ -53,11 +53,12 @@ public:
 				string* valuePointers;
 
 				Node ();
-				Node (int keySize) : keySize(keySize), currentSize(0), keyArray(new int[keySize]), 
+				Node (int keySize) : maxKeys(keySize), currentSize(0), keyArray(new int[keySize]), 
 					parent(NULL), next(NULL), nodePointers(NULL),
 					valuePointers(NULL) {};
 
 				// return true if insert successfully, else returns false
+				/*
 				bool insert(int key, string value) {
 					if (currentSize < keySize) {
 						keyArray[currentSize];
@@ -79,7 +80,7 @@ public:
 					}
 						
 				}
-
+				*/
 				int find(int key) {
 					for (int i=0; i<currentSize; i++) {
 						if (key == keyArray[i]) {
@@ -98,20 +99,28 @@ public:
 				}
 
 				bool isFull() {
-					if (currentSize == keySize) {
+					if (currentSize < maxKeys) {
+						return false;
+					} else {
+						return true;
+					}
+				}
+				
+				bool isLeaf() {
+					if (nodePointers == NULL) {
 						return true;
 					} else {
 						return false;
 					}
 				}
-
+				/*
 				void shuffleDown(int startIndex) {
 					// "-1" because we should not shift beyond the last element
 					for(int i=startIndex; i<currentSize-1; i++) {
 						keyArray[i] = keyArray[i+1];
 					}
 				}
-				
+				*/
 				void shuffleUp(int startIndex) {
 					for(int i=currentSize-1; i>=startIndex; i--) {
 						keyArray[i+1] = keyArray[i];
@@ -119,11 +128,12 @@ public:
 							valuePointers[i+1] = valuePointers[i];
 						}
 					}
+					if (nodePointers != NULL) {
+						for(int i=currentSize; i>=startIndex; i--) {
+							nodePointers[i+1] = nodePointers[i];
+						}
+					}
 				}
-
-
-				//Node (int,int);
-				//int someFunction(int);
 		};
 		
 class Bptree {
@@ -131,100 +141,21 @@ class Bptree {
 	
 	// make this private
 	private:
-		/*
-		class Node {
-			public:
-				//int holder;
-				int keySize;
-				int currentSize;
-				int* keyArray;
-				Node* parent; // pointer to a parent node
-				Node* next; //pointer to the next neighboring node (null if not a leaf node)
-				Node** nodePointers;
-				string* valuePointers;
-
-				Node ();
-				Node (int keySize) : keySize(keySize), currentSize(0), keyArray(new int[keySize]), 
-					parent(NULL), next(NULL), nodePointers(NULL),
-					valuePointers(NULL) {};
-
-				// return true if insert successfully, else returns false
-				bool insert(int key, string value) {
-					if (currentSize < keySize) {
-						keyArray[currentSize];
-						//currentSize++;
-						return true;
-					} else {
-						return false;
-					}
-				}
-
-				bool remove(int key) {
-					int keyIndex = find(key);
-					if (keyIndex != -1) {
-						shuffleDown(keyIndex);
-						currentSize--;
-						return true;
-					} else {
-						return false;
-					}
-						
-				}
-
-				int find(int key) {
-					for (int i=0; i<currentSize; i++) {
-						if (key == keyArray[i]) {
-							return i;
-						}
-					}
-					return -1;
-				}
-
-				bool isEmpty() {
-					if(currentSize == 0) {
-						return true;
-					} else {
-						return false;
-					}
-				}
-
-				bool isFull() {
-					if (currentSize == keySize) {
-						return true;
-					} else {
-						return false;
-					}
-				}
-
-				void shuffleDown(int startIndex) {
-					// "-1" because we should not shift beyond the last element
-					for(int i=startIndex; i<currentSize-1; i++) {
-						keyArray[i] = keyArray[i+1];
-					}
-				}
-				
-				void shuffleUp(int startIndex) {
-					for(int i=currentSize-1; i>=startIndex; i--) {
-						keyArray[i] = keyArray[i+1];
-						if (valuePointers != NULL) {
-							valuePointers[i] = valuePointers[i+1];
-						}
-					}
-					currentSize++;
-				}
-
-
-				//Node (int,int);
-				//int someFunction(int);
-		};
-		*/
+		
 		Node* root;
 		int keySize;
 		int interiorReq;
 		int leafReq;
 
 		void findAndInsert(int key, string value, Node* nd);
-		Node* getNode(int key, Node* nd);
+		Node* getLeaf(int key, Node* nd);
+		void insertToLeaf(int key, string value, Node* leaf);
+		void insertToInterior(int key, Node* nd, Node* child);
+		Node* makeSortedKeysNd(int key, string value, Node* nd, Node* child);
+		int* mergeToSortedArray(int key, int* oldArr);
+		void split(int key, string value, Node* nd, Node* child);
+		void printKeysRow(Node* nd);
+		void printValuesLeaf(Node* leaf);
 
 	public:
 		Bptree(int keySize);

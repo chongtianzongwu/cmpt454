@@ -17,16 +17,29 @@ int main(int argc, const char * argv[]) {
 	int valueSize = 4;
 
 	Bptree* tree = new Bptree(valueSize);
+	
+	tree->printKeys();
+	
 	tree->insert(1, "hello");
 	tree->insert(3, "world");
 	tree->insert(10, "!");
 	tree->printKeys();
-	tree->printValues();
+
 	tree->insert(2, "pc");
 	tree->printKeys();
+
+
+	tree->insert(4, "welcome");
+	tree->printKeys();
 	tree->printValues();
-
-
+	
+	tree->insert(5, "yup");
+	tree->insert(6, "nope");
+	tree->printKeys();
+	tree->printValues();
+	
+	
+	
     
     return 0;
 }
