@@ -79,7 +79,14 @@ Node* Bptree::getLeaf(int key, Node* nd) {
     int nextNdIndex = 0;
     // this is a leaf node
     if (nd->nodePointers == NULL) {
-        return nd;
+        for (int i=0; i<nd->currentSize; i++) {
+            if (nd->keyarray[i] == key) {
+                return nd;
+            } else {
+                 return NULL;
+            }
+        }
+       
     } else {
         for(int i=0; i<nd->currentSize; i++) {
             if(key < nd->keyArray[i]) {
