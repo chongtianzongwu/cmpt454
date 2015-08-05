@@ -405,6 +405,16 @@ void Bptree::remove(int key){
                     node->next->shuffleDown(0);
                     node->next->currentSize--;
                     node->currentSize++;
+                    for (int i=0; i<node->parent->currentSize; i++){
+                        if (node->parent->keyArray[i]==node->keyArray[node->currentSize-1]){
+                            node->parent->keyArray[i] = node->next->keyArray[0];
+                        }
+                        
+                        
+                    }
+                    
+                    
+                    
                 }
             }
             else if (node->previous->parent == node->parent){
@@ -415,6 +425,17 @@ void Bptree::remove(int key){
                 node->keyArray[0] = node->previous->keyArray[node->previous->currentSize-1];
                 node->previous->currentSize--;
                 node->currentSize++;
+                for (int i=0; i<node->parent->currentSize; i++){
+                    if (node->parent->keyArray[i] == node ->keyArray[0]){
+                        node->parent->keyArray[i]=node->previous->keyArray[node->previous->currentSize-1];
+                        //do something
+                    }
+                    
+                }
+                
+                
+                
+                //maybe delete the reference in the previous node?
             }
             
             else{
