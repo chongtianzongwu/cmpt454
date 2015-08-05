@@ -37,7 +37,23 @@ int main(int argc, const char * argv[]) {
 	tree->insert(5, "yup");
 	tree->insert(6, "nope");
 	tree->printKeys();
-	tree->printValues();
+	//tree->printValues();
+    
+    tree->remove(1);
+    
+    tree->printKeys();
+    
+    
+    tree->remove(4);
+    
+    tree->printKeys();
+    
+    
+    tree->remove(2);
+    
+    tree->printKeys();
+    
+    /*
     tree->find(4);
 	tree->insert(7, "a");
 	tree->printKeys();
@@ -52,7 +68,7 @@ int main(int argc, const char * argv[]) {
 	tree->printKeys();
 	tree->printValues();
 	
-	
+	*/
 	
     
     return 0;

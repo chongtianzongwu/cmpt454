@@ -399,7 +399,7 @@ void Bptree::remove(int key){
             if(node->next->parent == node->parent ){
                 //then next is a sibling, and we can try to coalese
                 //check currentsize of sibling node, if that node has too little, we cannot coalsee
-                if(node->next->currentSize<leafReq){
+                if(node->next->currentSize>leafReq){
                     node->valuePointers[node->currentSize] = node ->next->valuePointers[0];
                     node->keyArray[node->currentSize] = node ->next->keyArray[0];
                     node->next->shuffleDown(0);
@@ -419,25 +419,22 @@ void Bptree::remove(int key){
             }
             else if (node->previous->parent == node->parent){
                 //then previous is a sibling and we need to coalese
-
-                node->shuffleUp(0);
-                node->valuePointers[0]=node->previous->valuePointers[node->previous->currentSize-1];
-                node->keyArray[0] = node->previous->keyArray[node->previous->currentSize-1];
-                node->previous->currentSize--;
-                node->currentSize++;
-                for (int i=0; i<node->parent->currentSize; i++){
-                    if (node->parent->keyArray[i] == node ->keyArray[0]){
-                        node->parent->keyArray[i]=node->previous->keyArray[node->previous->currentSize-1];
+                if (node->previous->currentSize>leafReq){
+                    node->shuffleUp(0);
+                    node->valuePointers[0]=node->previous->valuePointers[node->previous->currentSize-1];
+                    node->keyArray[0] = node->previous->keyArray[node->previous->currentSize-1];
+                    node->previous->currentSize--;
+                    node->currentSize++;
+                    for (int i=0; i<node->parent->currentSize; i++){
+                        if (node->parent->keyArray[i] == node ->keyArray[0]){
+                            node->parent->keyArray[i]=node->previous->keyArray[node->previous->currentSize-1];
                         //do something
-                    }
+                        }
                     
-                }
-                
-                
-                
+                    }
                 //maybe delete the reference in the previous node?
+                }
             }
-            
             else{
                 //the tree must collapse a floor, and shrink in height
                 
