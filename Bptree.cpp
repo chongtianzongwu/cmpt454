@@ -378,6 +378,7 @@ string Bptree::find(int key){
 
 
 void Bptree::remove(int key){
+    int indexpointer;
 
     if(root == NULL) {
         cout<<"Tree is empty";
@@ -387,6 +388,7 @@ void Bptree::remove(int key){
         for (int i=0; i<node->currentSize; i++){
             if (node->keyArray[i]==key){
                 printf("Found Node, Key is : %d, now deleting", key);
+                indexpointer = i;
                 node->shuffleDown(i);
                 node->currentSize--;
             }
@@ -396,9 +398,27 @@ void Bptree::remove(int key){
             //check for a sibling, not a cousin
             if(node->next->parent == node->parent ){
                 //then next is a sibling, and we can try to coalese
-                
-                
-                
+                //check currentsize of sibling node, if that node has too little, we cannot coalsee
+                if(node->next->currentSize<leafReq){
+                    node->valuePointers[node->currentSize] = node ->next->valuePointers[0];
+                    node->keyArray[node->currentSize] = node ->next->keyArray[0];
+                    node->next->shuffleDown(0);
+                    node->next->currentSize--;
+                    node->currentSize++;
+                }
+            }
+            else if (node->previous->parent == node->parent){
+                //then previous is a sibling and we need to coalese
+
+                node->shuffleUp(0);
+                node->valuePointers[0]=node->previous->valuePointers[node->previous->currentSize-1];
+                node->keyArray[0] = node->previous->keyArray[node->previous->currentSize-1];
+                node->previous->currentSize--;
+                node->currentSize++;
+            }
+            
+            else{
+                //the tree must collapse a floor, and shrink in height
                 
                 
                 
@@ -406,14 +426,12 @@ void Bptree::remove(int key){
             }
             
             
-            
-            
-            
         }
         
         
         
     }
+    //might also have to fix the interior nodes as well, chech the first value of the array and compare it to the parent interoior nodes
 }
 
 
