@@ -80,16 +80,33 @@ Node* Bptree::getLeaf(int key, Node* nd) {
     // this is a leaf node
     if (nd->nodePointers == NULL) {
         
+<<<<<<< HEAD
         for (int i=0; i<nd->currentSize; i++) {
             if (nd->keyArray[i] == key) {
                 return nd;
             } else {
                  return NULL;
+=======
+        /*
+        bool isFound = false;
+        for (int i=0; i<nd->currentSize; i++) {
+            if (nd->keyArray[i] == key) {
+                isFound = true;
+                break;
+>>>>>>> efa4a37116f58bdbf8b5dc946156860078efa107
             }
         }
+        if (isFound) {
+            return nd;
+        } else {
+            return NULL;
+        }
+         */
+        return nd;
        
     } else {
         for(int i=0; i<nd->currentSize; i++) {
+        //for (int i=nd->currentSize;i>=0; i--){
             if(key < nd->keyArray[i]) {
                 break;
             }
@@ -184,6 +201,7 @@ void Bptree::split(int key, string value, Node* nd, Node* child) {
 	delete keyNd;
 	
 	nd->next = sibling;
+    sibling->previous = nd;
 	if (nd->parent == NULL) {
 		root = new Node(keySize);
 		root->nodePointers = new Node*[keySize+1];
@@ -196,6 +214,7 @@ void Bptree::split(int key, string value, Node* nd, Node* child) {
 	} else {
 		cout << "parent is full!" << endl;
 		sibling->parent = nd->parent;
+        //nd->parent->currentSize++;
 		insertToInterior(key, nd->parent, sibling);
 	}
 }
@@ -206,7 +225,10 @@ void Bptree::insertToInterior(int key, Node* nd, Node* child) {
 	}
 	if (!nd->isFull()) {
 		int i = 0;
-		for (; i<nd->currentSize; i++) {
+        
+        
+        
+		for (; i<nd->currentSize+1; i++) {
 			if (key < nd->keyArray[i]) {
 				nd->shuffleUp(i);
 				break;
@@ -297,19 +319,168 @@ int* Bptree::mergeToSortedArray(int key, int* oldArr) {
  	
 	return newArr;
 }
-/*
 
-int Bptree::remove(int parameters){
-    
-    return 0;
+//a recursive function that will find the leaf node
+Node* Bptree::findnode(int key, Node* node){
+    int nextNdIndex=0;
+    if (node->nodePointers == NULL){
+        return node;
+    }
+    else {
+        for(int i=0; i<node->currentSize; i++) {
+            //for (int i=nd->currentSize;i>=0; i--){
+            if(key < node->keyArray[i]) {
+                break;
+            }
+            nextNdIndex++;
+        }
+        
+        node = findnode(key, node->nodePointers[nextNdIndex]);
+
+    }
+    return node;
     
 }
 
-string Bptree::find(int parameters){
+
+string Bptree::find(int key){
     
-    return 0;
-}
+    string returnvalue;
+    //int nextNdIndex =0;
+    if(root == NULL) {
+        cout<<"Tree is empty";
+    }
+    
+    else{
+        Node * node=findnode(key,root);
+        /*
+        if (root->nodePointers==NULL){
+            node = root;
+        }
+        
+        else {
+            for(int i=0; i<node->currentSize; i++) {
+                //for (int i=nd->currentSize;i>=0; i--){
+                if(key < node->keyArray[i]) {
+                    break;
+                }
+                nextNdIndex++;
+            }
+            node = findnode(key, node->nodePointers[nextNdIndex]);
+            
+        }
 */
+        
+        
+        for (int i=0; i<node->currentSize; i++){
+            if (node->keyArray[i]==key){
+                printf("Found Node, Key is : %d", key);
+                printf("And the String value is : %s", node->valuePointers[i].c_str());
+                returnvalue = node->valuePointers[i];
+                
+            }
+        }
+    }
+    return returnvalue;
+}
+
+
+void Bptree::remove(int key){
+    bool foundneighbour = false;
+    if(root == NULL) {
+        cout<<"Tree is empty";
+    }
+    else{
+        Node* node = findnode(key, root);
+        for (int i=0; i<node->currentSize; i++){
+            if (node->keyArray[i]==key){
+                printf("Found Node, Key is : %d, now deleting", key);
+                node->shuffleDown(i);
+                node->currentSize--;
+            }
+        }
+        //chech if node has enough entries. if not, need to merge.
+        if ((node->currentSize<leafReq)){
+            //check for a sibling, not a cousin
+            
+            
+            if (node->next!= NULL){
+            if(node->next->parent == node->parent && foundneighbour == false ){
+                //then next is a sibling, and we can try to coalese
+                //check currentsize of sibling node, if that node has too little, we cannot coalsee
+                if(node->next->currentSize>leafReq){
+                    foundneighbour = true;
+                    node->valuePointers[node->currentSize] = node ->next->valuePointers[0];
+                    node->keyArray[node->currentSize] = node ->next->keyArray[0];
+                    node->next->shuffleDown(0);
+                    node->next->currentSize--;
+                    node->currentSize++;
+                    
+                    
+                    for (int i=node->parent->currentSize-1; i>=0; i--){
+                        if (node->parent->keyArray[i]<node->next->keyArray[0]){
+                            node->parent->keyArray[i] = node->next->keyArray[0];
+                            break;
+                        }
+                        
+                        
+                    }
+                    
+                    
+                    
+                }
+            }
+            }
+            if (node->previous != NULL){
+             if (node->previous->parent == node->parent && foundneighbour == false){
+                //then previous is a sibling and we need to coalese
+                if (node->previous->currentSize>leafReq){
+                    foundneighbour = true;
+                    node->shuffleUp(0);
+                    node->valuePointers[0]=node->previous->valuePointers[node->previous->currentSize-1];
+                    node->keyArray[0] = node->previous->keyArray[node->previous->currentSize-1];
+                    node->previous->currentSize--;
+                    node->currentSize++;
+                    for (int i=0; i<node->parent->currentSize; i++){
+                        if (node->parent->keyArray[i] > node ->keyArray[0]){
+                       // if (node->parent->keyArray[i] ==removedkey){
+
+                            
+                            node->parent->keyArray[i]=node->keyArray[0];
+                            break;
+                            
+                            //node->parent->keyArray[i]=node->previous->keyArray[node->previous->currentSize-1];
+                        //do something
+                        }
+                    
+                    }
+                //maybe delete the reference in the previous node?
+                }
+            }
+            }
+            
+            //otherwise, if there are no neighbours that can coalese, that means the tree shrinks
+            //mess arouond with nodepointers in interior nodes
+            
+            
+            if (foundneighbour == false){
+                //the tree must collapse a floor, and shrink in height
+                printf("\n TREE COLLAPSE");
+                
+                
+                
+                
+            }
+            
+            
+        }
+        
+        
+        
+    }
+    //might also have to fix the interior nodes as well, chech the first value of the array and compare it to the parent interoior nodes
+}
+
 
 void Bptree::printKeys(){
     cout << "\n---------------- Displaying Keys ----------------\n" << endl;
