@@ -49,6 +49,7 @@ public:
 				int* keyArray;
 				Node* parent; // pointer to a parent node
 				Node* next; //pointer to the next neighboring node (null if not a leaf node)
+                Node* previous;
 				Node** nodePointers;
 				string* valuePointers;
 
@@ -113,14 +114,16 @@ public:
 						return false;
 					}
 				}
-				/*
+				
 				void shuffleDown(int startIndex) {
+                    /*
 					// "-1" because we should not shift beyond the last element
 					for(int i=startIndex; i<currentSize-1; i++) {
 						keyArray[i] = keyArray[i+1];
 					}
+                     */
 				}
-				*/
+				
 				void shuffleUp(int startIndex) {
 					for(int i=currentSize-1; i>=startIndex; i--) {
 						keyArray[i+1] = keyArray[i];
@@ -134,6 +137,13 @@ public:
 						}
 					}
 				}
+       
+        
+        
+        
+        
+        
+        
 		};
 		
 class Bptree {
@@ -156,6 +166,7 @@ class Bptree {
 		void split(int key, string value, Node* nd, Node* child);
 		void printKeysRow(Node* nd);
 		void printValuesLeaf(Node* leaf);
+        Node* findnode(int key, Node* node);
 
 	public:
 		Bptree(int keySize);
@@ -168,7 +179,7 @@ class Bptree {
 		void printKeys();
 		void printValues();
         void remove(int key);
-        void find(int key);
+        string find(int key);
 
    
 };

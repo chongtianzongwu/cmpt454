@@ -98,6 +98,7 @@ Node* Bptree::getLeaf(int key, Node* nd) {
        
     } else {
         for(int i=0; i<nd->currentSize; i++) {
+        //for (int i=nd->currentSize;i>=0; i--){
             if(key < nd->keyArray[i]) {
                 break;
             }
@@ -192,6 +193,7 @@ void Bptree::split(int key, string value, Node* nd, Node* child) {
 	delete keyNd;
 	
 	nd->next = sibling;
+    sibling->previous = nd;
 	if (nd->parent == NULL) {
 		root = new Node(keySize);
 		root->nodePointers = new Node*[keySize+1];
@@ -310,30 +312,108 @@ int* Bptree::mergeToSortedArray(int key, int* oldArr) {
 	return newArr;
 }
 
-void Bptree::find(int key){
-    if(root == NULL) {
-        cout<<"Tree is empty";
+//a recursive function that will find the leaf node
+Node* Bptree::findnode(int key, Node* node){
+    int nextNdIndex=0;
+    if (node->nodePointers == NULL){
+        return node;
     }
-    getLeaf(key, root);
-    
-    
+    else {
+        for(int i=0; i<node->currentSize; i++) {
+            //for (int i=nd->currentSize;i>=0; i--){
+            if(key < node->keyArray[i]) {
+                break;
+            }
+            nextNdIndex++;
+        }
+        
+        node = findnode(key, node->nodePointers[nextNdIndex]);
+
+    }
+    return node;
     
 }
 
 
-
+string Bptree::find(int key){
+    
+    string returnvalue;
+    //int nextNdIndex =0;
+    if(root == NULL) {
+        cout<<"Tree is empty";
+    }
+    
+    else{
+        Node * node=findnode(key,root);
+        /*
+        if (root->nodePointers==NULL){
+            node = root;
+        }
+        
+        else {
+            for(int i=0; i<node->currentSize; i++) {
+                //for (int i=nd->currentSize;i>=0; i--){
+                if(key < node->keyArray[i]) {
+                    break;
+                }
+                nextNdIndex++;
+            }
+            node = findnode(key, node->nodePointers[nextNdIndex]);
+            
+        }
+*/
+        
+        
+        for (int i=0; i<node->currentSize; i++){
+            if (node->keyArray[i]==key){
+                printf("Found Node, Key is : %d", key);
+                printf("And the String value is : %s", node->valuePointers[i].c_str());
+                returnvalue = node->valuePointers[i];
+                
+            }
+        }
+    }
+    return returnvalue;
+}
 
 
 void Bptree::remove(int key){
 
- if(root == NULL) {
- cout<<"Tree is empty";
- }
- 
- 
- 
- 
- 
+    if(root == NULL) {
+        cout<<"Tree is empty";
+    }
+    else{
+        Node* node = findnode(key, root);
+        for (int i=0; i<node->currentSize; i++){
+            if (node->keyArray[i]==key){
+                printf("Found Node, Key is : %d, now deleting", key);
+                node->shuffleDown(i);
+                node->currentSize--;
+            }
+        }
+        //chech if node has enough entries. if not, need to merge.
+        if ((node->currentSize<leafReq)){
+            //check for a sibling, not a cousin
+            if(node->next->parent == node->parent ){
+                //then next is a sibling, and we can try to coalese
+                
+                
+                
+                
+                
+                
+                
+            }
+            
+            
+            
+            
+            
+        }
+        
+        
+        
+    }
 }
 
 
