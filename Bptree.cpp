@@ -378,8 +378,7 @@ string Bptree::find(int key){
 
 
 void Bptree::remove(int key){
-    int indexpointer;
-
+    bool foundneighbour = false;
     if(root == NULL) {
         cout<<"Tree is empty";
     }
@@ -388,7 +387,6 @@ void Bptree::remove(int key){
         for (int i=0; i<node->currentSize; i++){
             if (node->keyArray[i]==key){
                 printf("Found Node, Key is : %d, now deleting", key);
-                indexpointer = i;
                 node->shuffleDown(i);
                 node->currentSize--;
             }
@@ -396,18 +394,25 @@ void Bptree::remove(int key){
         //chech if node has enough entries. if not, need to merge.
         if ((node->currentSize<leafReq)){
             //check for a sibling, not a cousin
-            if(node->next->parent == node->parent ){
+            
+            
+            if (node->next!= NULL){
+            if(node->next->parent == node->parent && foundneighbour == false ){
                 //then next is a sibling, and we can try to coalese
                 //check currentsize of sibling node, if that node has too little, we cannot coalsee
                 if(node->next->currentSize>leafReq){
+                    foundneighbour = true;
                     node->valuePointers[node->currentSize] = node ->next->valuePointers[0];
                     node->keyArray[node->currentSize] = node ->next->keyArray[0];
                     node->next->shuffleDown(0);
                     node->next->currentSize--;
                     node->currentSize++;
-                    for (int i=0; i<node->parent->currentSize; i++){
-                        if (node->parent->keyArray[i]==node->keyArray[node->currentSize-1]){
+                    
+                    
+                    for (int i=node->parent->currentSize-1; i>=0; i--){
+                        if (node->parent->keyArray[i]<node->next->keyArray[0]){
                             node->parent->keyArray[i] = node->next->keyArray[0];
+                            break;
                         }
                         
                         
@@ -417,17 +422,26 @@ void Bptree::remove(int key){
                     
                 }
             }
-            else if (node->previous->parent == node->parent){
+            }
+            if (node->previous != NULL){
+             if (node->previous->parent == node->parent && foundneighbour == false){
                 //then previous is a sibling and we need to coalese
                 if (node->previous->currentSize>leafReq){
+                    foundneighbour = true;
                     node->shuffleUp(0);
                     node->valuePointers[0]=node->previous->valuePointers[node->previous->currentSize-1];
                     node->keyArray[0] = node->previous->keyArray[node->previous->currentSize-1];
                     node->previous->currentSize--;
                     node->currentSize++;
                     for (int i=0; i<node->parent->currentSize; i++){
-                        if (node->parent->keyArray[i] == node ->keyArray[0]){
-                            node->parent->keyArray[i]=node->previous->keyArray[node->previous->currentSize-1];
+                        if (node->parent->keyArray[i] > node ->keyArray[0]){
+                       // if (node->parent->keyArray[i] ==removedkey){
+
+                            
+                            node->parent->keyArray[i]=node->keyArray[0];
+                            break;
+                            
+                            //node->parent->keyArray[i]=node->previous->keyArray[node->previous->currentSize-1];
                         //do something
                         }
                     
@@ -435,8 +449,15 @@ void Bptree::remove(int key){
                 //maybe delete the reference in the previous node?
                 }
             }
-            else{
+            }
+            
+            //otherwise, if there are no neighbours that can coalese, that means the tree shrinks
+            //mess arouond with nodepointers in interior nodes
+            
+            
+            if (foundneighbour == false){
                 //the tree must collapse a floor, and shrink in height
+                printf("\n TREE COLLAPSE");
                 
                 
                 

@@ -39,19 +39,24 @@ int main(int argc, const char * argv[]) {
 	tree->printKeys();
 	//tree->printValues();
     
-    tree->remove(1);
-    
-    tree->printKeys();
-    
-    
     tree->remove(4);
     
     tree->printKeys();
     
     
-    tree->remove(2);
+    tree->remove(5);
     
     tree->printKeys();
+    
+    
+    tree->remove(6);
+    
+    tree->printKeys();
+    
+    tree->remove(1);
+    
+    tree->printKeys();
+    
     
     /*
     tree->find(4);
