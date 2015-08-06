@@ -57,14 +57,16 @@ int main(int argc, const char * argv[]) {
     
     tree->printKeys();
     
+    string outputstring = tree->find(4);
     
-    /*
-    tree->find(4);
+    cout<<"\n" + outputstring;
+    
+    
 	tree->insert(7, "a");
 	tree->printKeys();
 	tree->printValues();
     
-    tree->remove(1);
+   
    
 	tree->insert(8, "b");
 	tree->insert(9, "c");
@@ -73,7 +75,7 @@ int main(int argc, const char * argv[]) {
 	tree->printKeys();
 	tree->printValues();
 	
-	*/
+	
 	
     
     return 0;
