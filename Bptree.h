@@ -116,6 +116,19 @@ public:
 				}
 				
 				void shuffleDown(int startIndex) {
+                    for(int i=startIndex; i<currentSize-1; i++){
+                        keyArray[i] = keyArray[i+1];
+                        valuePointers[i] = valuePointers[i+1];
+                    }
+                    if (nodePointers != NULL){
+                        for (int i=startIndex; i<currentSize-1; i++){
+                            nodePointers[i]=nodePointers[i+1];
+                            
+                        }
+                        
+                        
+                    }
+                    
                     /*
 					// "-1" because we should not shift beyond the last element
 					for(int i=startIndex; i<currentSize-1; i++) {
