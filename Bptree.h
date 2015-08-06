@@ -144,12 +144,15 @@ public:
 							valuePointers[i+1] = valuePointers[i];
 						}
 					}
-					if (nodePointers != NULL) {
-						for(int i=currentSize; i>=startIndex; i--) {
+				}
+				void shuffleUpNodePointers(int startIndex) {
+					for(int i=currentSize; i>=startIndex; i--) {
 							nodePointers[i+1] = nodePointers[i];
-						}
 					}
 				}
+			
+						
+					
        
         
         
