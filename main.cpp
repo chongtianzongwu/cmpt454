@@ -37,8 +37,31 @@ int main(int argc, const char * argv[]) {
 	tree->insert(5, "yup");
 	tree->insert(6, "nope");
 	tree->printKeys();
-	//tree->printValues();
+	tree->printValues();
     
+
+  	tree->insert(7, "a");
+    tree->insert(8, "b");
+    tree->insert(9, "c");
+    tree->printKeys();
+    tree->insert(11, "d");
+    tree->printKeys();
+    
+    tree->insert(13, "f");
+    tree->insert(12, "e");
+    tree->printKeys();
+
+    tree->insert(14, "g");
+ 	tree->insert(20, "v");
+  	tree->insert(15, "h");
+    tree->printKeys();
+
+    tree->insert(16, "i");
+    tree->printKeys();
+    //tree->insert(9, "c");
+   // tree->printKeys();
+	//tree->printValues();
+    /*
     tree->remove(4);
     
     tree->printKeys();
@@ -56,7 +79,7 @@ int main(int argc, const char * argv[]) {
     tree->remove(1);
     
     tree->printKeys();
-    
+    */
     
     /*
     tree->find(4);
