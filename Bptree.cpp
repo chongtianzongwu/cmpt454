@@ -77,6 +77,7 @@ void Bptree::insertToLeaf(int key, string value, Node* leaf) {
 void Bptree::split(int key, string value, Node* nd, Node* child) {
 	Node* sibling = new Node(keySize);
 	Node* keyNd = makeSortedKeysNd(key, value, nd, child);
+	int leftOver = -1;
 	
 	if (nd->isLeaf()) {
 		int splitSz = keyNd->currentSize - leafReq;
@@ -94,6 +95,7 @@ void Bptree::split(int key, string value, Node* nd, Node* child) {
 			sibling->valuePointers[i] = keyNd->valuePointers[splitSz+i];
 		}
 		sibling->currentSize = leafReq;		
+		leftOver = sibling->keyArray[0];
 	} else {
 		int splitPointerSz = 0;
 		int splitKeySz = 0;
@@ -125,11 +127,13 @@ void Bptree::split(int key, string value, Node* nd, Node* child) {
 		for (int i=0; i<splitKeySz; i++) {
 			nd->keyArray[i] = keyNd->keyArray[i];
 		}
-		nd->currentSize = splitKeySz;
 		for (int i=0; i<keySize/2; i++) {
 			sibling->keyArray[i] = keyNd->keyArray[i+splitKeySz+1]; // '+1' is because we need to leave the middle element out
 		}
+		nd->currentSize = splitKeySz;
 		sibling->currentSize = keySize/2;
+		leftOver = keyNd->keyArray[splitKeySz];
+		cout << "\nleft over is: " << leftOver << endl;
 	}
 	delete keyNd;
 	
@@ -141,14 +145,15 @@ void Bptree::split(int key, string value, Node* nd, Node* child) {
 		root->nodePointers = new Node*[keySize+1];
 		root->nodePointers[0] = nd;
 		root->nodePointers[1] = sibling;
-		root->keyArray[0] = sibling->keyArray[0];
+		root->keyArray[0] = leftOver;
 		root->currentSize++;
 		nd->parent = root;
 		sibling->parent = root;
 	} else {
 		sibling->parent = nd->parent;
         //nd->parent->currentSize++;
-		insertToInterior(sibling->keyArray[0], nd->parent, sibling);
+
+		insertToInterior(leftOver, nd->parent, sibling);
 	}
 }
 
@@ -212,8 +217,8 @@ Node* Bptree::makeSortedKeysNd(int key, string value, Node* nd, Node* child) {
 			}
 		}
 		if (!isChildInserted) {
-			keyNd->nodePointers[keySize] = child;
-			keyNd->nodePointers[keySize+1] = nd->nodePointers[oldValuesInserted];
+			keyNd->nodePointers[keySize] = nd->nodePointers[oldValuesInserted];
+			keyNd->nodePointers[keySize+1] = child;
 		} else {
 			while (oldValuesInserted <= keySize) {
 				int i = 0;
@@ -272,34 +277,23 @@ Node* Bptree::findnode(int key, Node* node){
             nextNdIndex++;
         }
         
-        node = findnode(key, node->nodePointers[nextNdIndex]);
+        return(findnode(key, node->nodePointers[nextNdIndex]));
 
     }
-    return node;
-    
 }
 
 
 string Bptree::find(int key){
     
     string returnvalue = "Node Not Found\n";
-    //int nextNdIndex =0;
     if(root == NULL) {
-        cout<<"Tree is empty!";
         return "";
     }
     else{
         Node * node=findnode(key,root);
         for (int i=0; i<node->currentSize; i++){
             if (node->keyArray[i]==key){
-
                 return (node->valuePointers[i]);
-
-                printf("\n Found Node, Key is : %d", key);
-                printf("\n And the String value is : %s", node->valuePointers[i].c_str());
-                returnvalue = node->valuePointers[i];
-                
-
             }
         }
         return "";

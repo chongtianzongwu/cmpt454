@@ -2,7 +2,7 @@
 //  bptree.h
 //  bptree
 //
-//  Created by Tyler Wong on 2015-07-24.
+//  Created by Tyler Wong (301207988), and Colin Qiao (301191776)on 2015-07-24.
 //  Copyright (c) 2015 Tyler Wong. All rights reserved.
 //
 
@@ -11,36 +11,9 @@
 
 #pragma once
 
-//#include <stdio.h>
 #include <iostream>
 #include <string>
-//#include "bptree.cpp"
 using namespace std;
-/*
-class record{
-    int key;
-    string stringvalue;
-    
-public:
-    record();
-    record(int, string);//initializing a record with a key and a string.
-    string getstring();
-    int getkey();
-};
-*/
-
-/*
-class Node {
-    int holder;
-    int* keyarray;
-    Node* parent; // pointer to a parent node
-    Node* next; //pointer to the next neighboring node (null if not a leaf node)
-public:
-    Node ();
-    Node (int,int);
-    int someFunction(int);
-};
-*/
 	class Node {
 			public:
 				//int holder;
@@ -57,40 +30,7 @@ public:
 				Node (int keySize) : maxKeys(keySize), currentSize(0), keyArray(new int[keySize]), 
 					parent(NULL), next(NULL), nodePointers(NULL),
 					valuePointers(NULL) {};
-
-				// return true if insert successfully, else returns false
-				/*
-				bool insert(int key, string value) {
-					if (currentSize < keySize) {
-						keyArray[currentSize];
-						//currentSize++;
-						return true;
-					} else {
-						return false;
-					}
-				}
-
-				bool remove(int key) {
-					int keyIndex = find(key);
-					if (keyIndex != -1) {
-						shuffleDown(keyIndex);
-						currentSize--;
-						return true;
-					} else {
-						return false;
-					}
-						
-				}
-				*/
-				int find(int key) {
-					for (int i=0; i<currentSize; i++) {
-						if (key == keyArray[i]) {
-							return i;
-						}
-					}
-					return -1;
-				}
-
+			
 				bool isEmpty() {
 					if(currentSize == 0) {
 						return true;
@@ -125,16 +65,7 @@ public:
                             nodePointers[i]=nodePointers[i+1];
                             
                         }
-                        
-                        
                     }
-                    
-                    /*
-					// "-1" because we should not shift beyond the last element
-					for(int i=startIndex; i<currentSize-1; i++) {
-						keyArray[i] = keyArray[i+1];
-					}
-                     */
 				}
 				
 				void shuffleUp(int startIndex) {
@@ -150,22 +81,9 @@ public:
 							nodePointers[i+1] = nodePointers[i];
 					}
 				}
-			
-						
-					
-       
-        
-        
-        
-        
-        
-        
 		};
 		
 class Bptree {
-	//class Node; 
-	
-	// make this private
 	private:
 		
 		Node* root;
@@ -186,12 +104,7 @@ class Bptree {
 
 	public:
 		Bptree(int keySize);
-    
-		//int holder;
-		//Node x;
 	    void insert(int key, string value);
-		//int remove(int parameters);
-		//string find(int parameters);
 		void printKeys();
 		void printValues();
         void remove(int key);

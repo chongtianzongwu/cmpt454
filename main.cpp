@@ -9,7 +9,7 @@
 #include <iostream>
 #include <string>
 //#include "bptree.cpp"
-#include "bptree.h"
+#include "Bptree.h"
 //#include "Node.h"
 using namespace std; 
 
@@ -59,7 +59,8 @@ int main(int argc, const char * argv[]) {
     tree->insert(16, "i");
     tree->printKeys();
 
-    cout << "find 16" << find(16) << endl;
+    string result = tree->find(16);
+    cout << "result: " <<  result << endl;
     //tree->insert(9, "c");
    // tree->printKeys();
 	//tree->printValues();
