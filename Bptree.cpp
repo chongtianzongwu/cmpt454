@@ -14,55 +14,6 @@
 using namespace std;
 
 #ifdef _Bptree_
-/*
-record::record(){
-    //default
-    key=0;
-    stringvalue = "nothing";
-}
-
-record::record(int key, string stringvalue){
-    //proper construct
-    this->key = key;
-    this->stringvalue =stringvalue;
-}
-
-
-string record::getstring(){
-    return stringvalue;
-}
-
-int record::getkey(){
-    
-    return key;
-}
-*/
-
-/*
-Node::Node()//default node constructor
-{
-    holder = 700;
-    //implementation here
-}
-
-Node::Node(int maxkeyvalue, int y)
-{
-    keyarray = new int[maxkeyvalue]; // this is an array that is going to hold the key values.
-    
-    
-    
-}
-
-int Node::someFunction(int parameters)
-{
-    //holder = parameters;
-    printf("holder value is %d \n", holder);
-    //implemenation here
-    keyarray[1]=0;
-    return 0;
-}
-
-*/
 
 Bptree::Bptree(int keySize) {
     this->keySize = keySize;
@@ -119,7 +70,6 @@ void Bptree::insertToLeaf(int key, string value, Node* leaf) {
 			leaf->valuePointers[insertIndex] = value;
 			leaf->currentSize++;
 		} else {
-			cout << "this leaf is full!" << endl;
 			split(key, value, leaf, NULL);
 		}
 }
@@ -166,13 +116,9 @@ void Bptree::split(int key, string value, Node* nd, Node* child) {
 			nd->nodePointers[i] = keyNd->nodePointers[i];
 
  		}
- 		cout << "keyNd size is: " << keyNd->currentSize << endl;
- 		cout << "total size is: " << keyNd->currentSize+1 << endl;
 		for (int i=0; i<(keyNd->currentSize+1)-splitPointerSz; i++) {
 			sibling->nodePointers[i] = keyNd->nodePointers[i+splitPointerSz];
-			cout << "here" << endl;
 			sibling->nodePointers[i]->parent = sibling;
-			cout << "here" << endl;
 		}
 		
 		// distribute keys between nd and its sibling
@@ -200,7 +146,6 @@ void Bptree::split(int key, string value, Node* nd, Node* child) {
 		nd->parent = root;
 		sibling->parent = root;
 	} else {
-		cout << "insert into parent!" << endl;
 		sibling->parent = nd->parent;
         //nd->parent->currentSize++;
 		insertToInterior(sibling->keyArray[0], nd->parent, sibling);
@@ -308,10 +253,6 @@ int* Bptree::mergeToSortedArray(int key, int* oldArr) {
 		keyIndex++;
 		newArrIndex++;
 	}
-	
-	for (int i=0; i<keySize+1; i++) {
-		cout << "arr " << i << " is: " << newArr[i] << endl;
-	}
  	
 	return newArr;
 }
@@ -344,40 +285,18 @@ string Bptree::find(int key){
     string returnvalue;
     //int nextNdIndex =0;
     if(root == NULL) {
-        cout<<"Tree is empty";
+        cout<<"Tree is empty!";
+        return "";
     }
-    
     else{
         Node * node=findnode(key,root);
-        /*
-        if (root->nodePointers==NULL){
-            node = root;
-        }
-        
-        else {
-            for(int i=0; i<node->currentSize; i++) {
-                //for (int i=nd->currentSize;i>=0; i--){
-                if(key < node->keyArray[i]) {
-                    break;
-                }
-                nextNdIndex++;
-            }
-            node = findnode(key, node->nodePointers[nextNdIndex]);
-            
-        }
-*/
-        
-        
         for (int i=0; i<node->currentSize; i++){
             if (node->keyArray[i]==key){
-                printf("Found Node, Key is : %d", key);
-                printf("And the String value is : %s", node->valuePointers[i].c_str());
-                returnvalue = node->valuePointers[i];
-                
+                return (node->valuePointers[i]);
             }
         }
+        return "";
     }
-    return returnvalue;
 }
 
 

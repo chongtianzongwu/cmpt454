@@ -58,6 +58,8 @@ int main(int argc, const char * argv[]) {
 
     tree->insert(16, "i");
     tree->printKeys();
+
+    cout << "find 16"
     //tree->insert(9, "c");
    // tree->printKeys();
 	//tree->printValues();
